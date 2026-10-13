@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test_unit",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": [
+                "jest",
+                "tests/readynode/module/module.test.ts",
+                "-t",
+                "Test_Module_Data_Par_Defaut",
+                "--runInBand"
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}
