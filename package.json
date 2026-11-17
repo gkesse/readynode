@@ -6,7 +6,8 @@
     "scripts": {
         "test": "jest",
         "dev": "tsx src/readynode/index/index.ts",
-        "lint": "eslint src tests"
+        "lint": "eslint src tests",
+        "build": "tsc"
     },
     "keywords": [],
     "author": "",

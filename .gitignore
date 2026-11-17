@@ -2,10 +2,13 @@
 
 ~*
 *.bak
+*.log
 
 # ignore les repertoires
 
+.venv/
 .expo/
 tmp/
 node_modules/
-.venv/
+coverage/
+dist/
