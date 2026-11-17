@@ -5,5 +5,6 @@ module.exports = {
     moduleNameMapper: {
         '^@readynode/(.*)$': '<rootDir>/src/readynode/$1'
     },
-    setupFilesAfterEnv: ['<rootDir>/tests/readynode/setup/setup.ts']
+    setupFilesAfterEnv: ['<rootDir>/tests/readynode/setup/setup.ts'],
+    testPathIgnorePatterns: ['/node_modules/', '/dist/']
 };

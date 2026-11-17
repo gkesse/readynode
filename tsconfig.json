@@ -5,6 +5,7 @@
         "moduleResolution": "NodeNext",
         "strict": true,
         "isolatedModules": true,
+        "outDir": "./dist",
         "paths": {
             "@readynode/*": ["./src/readynode/*"]
         },
