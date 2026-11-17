@@ -1,11 +1,17 @@
-import { MODULE_TYPE, ModuleData } from '@readynode/module/Module';
+import { Module, MODULE_TYPE, ModuleInconnu } from '@readynode/module/ModuleFactory';
 
 describe('TestModule', () => {
-    // teste un mdoule data par defaut
-    it('Test_Module_Data_Par_Defaut', () => {
-        const module = new ModuleData();
-        expect(module.m_type).toBe(MODULE_TYPE.INCONNU);
-        expect(module.m_name).toBe('inconnu');
-        expect(module.m_description).toBe('Module inconnu.');
+    it('Test_Module_Par_Defaut', () => {
+        const module = new Module();
+        expect(module.getType()).toBe(MODULE_TYPE.INCONNU);
+        expect(module.getName()).toBe('inconnu');
+        expect(module.onCreate()()).toBeInstanceOf(ModuleInconnu);
+    });
+
+    it('Test_Module_Inconnu', () => {
+        const module = new Module(MODULE_TYPE.INCONNU, 'inconnu', () => new ModuleInconnu());
+        expect(module.getType()).toBe(MODULE_TYPE.INCONNU);
+        expect(module.getName()).toBe('inconnu');
+        expect(module.onCreate()()).toBeInstanceOf(ModuleInconnu);
     });
 });

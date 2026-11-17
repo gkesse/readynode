@@ -1,13 +1,10 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 export default [
     {
-        ignores: [
-            'dist/**',
-            'coverage/**',
-            'node_modules/**'
-        ]
+        ignores: ['dist/**', 'coverage/**', 'node_modules/**']
     },
 
     js.configs.recommended,
@@ -17,6 +14,10 @@ export default [
     {
         files: ['**/*.ts'],
 
+        plugins: {
+            'unused-imports': unusedImports
+        },
+
         languageOptions: {
             parserOptions: {
                 project: './tsconfig.json'
@@ -24,11 +25,19 @@ export default [
         },
 
         rules: {
-            '@typescript-eslint/no-unused-vars': [
-                'error',
+            // Supprime automatiquement les imports inutilisés
+            'unused-imports/no-unused-imports': 'error',
+
+            // Gère les variables inutilisées
+            '@typescript-eslint/no-unused-vars': 'off',
+
+            'unused-imports/no-unused-vars': [
+                'warn',
                 {
-                    argsIgnorePattern: '^_',
-                    varsIgnorePattern: '^_'
+                    vars: 'all',
+                    varsIgnorePattern: '^_',
+                    args: 'after-used',
+                    argsIgnorePattern: '^_'
                 }
             ],
 
