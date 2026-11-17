@@ -2,17 +2,49 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "test_all",
             "type": "node",
             "request": "launch",
-            "name": "test_unit",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": ["jest", "--runInBand"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "test_unit_one",
+            "type": "node",
+            "request": "launch",
             "runtimeExecutable": "npx",
             "runtimeArgs": [
                 "jest",
-                "tests/readynode/module/module.test.ts",
+                "tests/readynode/server/ServerTemplate.test.ts",
                 "-t",
-                "Test_Module_Data_Par_Defaut",
+                "Test_Server_Template_Par_Defaut",
                 "--runInBand"
             ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "test_unit_all",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": ["jest", "tests/readynode/server/ResourceLoader.test.ts", "--runInBand"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "debug_app",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": ["tsx", "--inspect-brk"],
+            "args": [
+                "${workspaceFolder}/src/readynode/index/index.ts",
+                "server",
+                "run_server",
+                "3000"
+            ],
+            "cwd": "${workspaceFolder}",
+            "skipFiles": ["<node_internals>/**"],
             "console": "integratedTerminal"
         }
     ]
