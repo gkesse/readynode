@@ -2,9 +2,10 @@ import { ServerManager } from '@readynode/server/ServerController';
 import { IncomingMessage, ServerResponse } from 'http';
 
 describe('TestServerManager', () => {
-    it('Test_Server_Manager_Creation', async () => {
+    it('Test_Server_Manager_Execution', async () => {
         const req = {
             method: 'GET',
+            headers: { host: 'localhost' },
             url: '/readydev/home'
         } as IncomingMessage;
 

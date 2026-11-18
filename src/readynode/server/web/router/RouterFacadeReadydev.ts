@@ -21,7 +21,7 @@ export default class RouterFacadeReadydev implements RouterFacadeInterface {
         this.m_resource_path = p_resource_path ?? new ResourcePath();
         this.initRouterPath();
         if (!this.loadRouterByPath(this.m_router_path)) {
-            throw new Exception('Le chemin du routeur est introuvable.');
+            throw new Exception('Le chemin du routeur est introuvable.', false);
         }
     }
 
