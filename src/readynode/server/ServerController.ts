@@ -26,8 +26,9 @@ export class ServerManager {
 
     public async run(): Promise<void> {
         const method = this.m_req.method ?? '';
+        const host = this.m_req.headers?.host ?? '';
         const path = this.m_req.url?.split('?')[0] ?? '';
-        const resource_path: ResourcePath = new ResourcePath(method, path);
+        const resource_path: ResourcePath = new ResourcePath(method, host, path);
         const router_facade_factory = new RouterFacadeFactory(resource_path);
         const router_facade: RouterFacade = router_facade_factory.getRouterFacade();
         const router_facade_interface: RouterFacadeInterface = router_facade.getFacade();

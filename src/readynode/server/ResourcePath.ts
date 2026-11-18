@@ -2,21 +2,26 @@ import { Exception } from '@readynode/exception/Exception';
 
 export default class ResourcePath {
     private readonly m_method: string = 'GET';
+    private readonly m_host: string = '';
     private readonly m_url: string = '';
     private m_code: string = 'readydev';
     private m_path: string = 'home';
 
     constructor();
-    constructor(p_method: string, p_url: string);
+    constructor(p_method: string, p_host: string, p_url: string);
 
-    constructor(p_method?: string, p_url?: string) {
+    constructor(p_method?: string, p_host?: string, p_url?: string) {
         if (p_method === undefined) {
             return;
         }
         if (p_method === '') {
             throw new Exception('La methode de la ressource est vide.');
         }
+        if (p_host === '') {
+            throw new Exception('Le nom du serveur de la ressource est vide.');
+        }
         this.m_method = p_method ?? 'GET';
+        this.m_host = p_host ?? '';
         this.m_url = p_url ?? '';
         this.loadResource();
     }
@@ -46,6 +51,10 @@ export default class ResourcePath {
 
     public getPath(): string {
         return this.m_path;
+    }
+
+    public getHost() {
+        return this.m_host;
     }
 
     public getUrl() {

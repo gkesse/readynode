@@ -16,7 +16,20 @@ describe('TestResourcePath', () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
         expect(() => {
-            new ResourcePath('', 'URL_RESOURCE');
+            new ResourcePath('', 'HOST_RESOURCE', 'URL_RESOURCE');
+        }).toThrow(DEF_MSG_EXCEPTION);
+
+        expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(DEF_MSG_EXCEPTION));
+        logSpy.mockRestore();
+    });
+
+    it('Test_Ressource_Nom_Serveur_Vide', () => {
+        const DEF_MSG_EXCEPTION = 'Le nom du serveur de la ressource est vide.';
+
+        const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+        expect(() => {
+            new ResourcePath('METHOD_RESOURCE', '', 'URL_RESOURCE');
         }).toThrow(DEF_MSG_EXCEPTION);
 
         expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(DEF_MSG_EXCEPTION));
@@ -33,6 +46,7 @@ describe('TestResourcePath', () => {
 
         interface Param {
             m_method: string;
+            m_host: string;
             m_url: string;
             m_result: Result;
         }
@@ -40,6 +54,7 @@ describe('TestResourcePath', () => {
         const params: Param[] = [
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: '',
                 m_result: {
                     m_code: 'readydev',
@@ -50,6 +65,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: '/',
                 m_result: {
                     m_code: 'readydev',
@@ -60,6 +76,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: 'CODE_RESOURCE',
                 m_result: {
                     m_code: 'CODE_RESOURCE',
@@ -70,6 +87,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: 'CODE_RESOURCE/',
                 m_result: {
                     m_code: 'CODE_RESOURCE',
@@ -80,6 +98,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: '/CODE_RESOURCE',
                 m_result: {
                     m_code: 'CODE_RESOURCE',
@@ -90,6 +109,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: '/CODE_RESOURCE/',
                 m_result: {
                     m_code: 'CODE_RESOURCE',
@@ -100,6 +120,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: 'CODE_RESOURCE/PATH_RESOURCE',
                 m_result: {
                     m_code: 'CODE_RESOURCE',
@@ -110,6 +131,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: 'CODE_RESOURCE/PATH_RESOURCE/',
                 m_result: {
                     m_code: 'CODE_RESOURCE',
@@ -120,6 +142,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: '/CODE_RESOURCE/PATH_RESOURCE',
                 m_result: {
                     m_code: 'CODE_RESOURCE',
@@ -130,6 +153,7 @@ describe('TestResourcePath', () => {
             },
             {
                 m_method: 'METHOD_RESOURCE',
+                m_host: 'HOST_RESOURCE',
                 m_url: '/CODE_RESOURCE/PATH_RESOURCE/',
                 m_result: {
                     m_code: 'CODE_RESOURCE',
@@ -141,10 +165,11 @@ describe('TestResourcePath', () => {
         ];
 
         for (const param of params) {
-            const resource_path = new ResourcePath(param.m_method, param.m_url);
+            const resource_path = new ResourcePath(param.m_method, param.m_host, param.m_url);
             expect(resource_path.getCode()).toBe(param.m_result.m_code);
             expect(resource_path.getPath()).toBe(param.m_result.m_path);
             expect(resource_path.getMethod()).toBe(param.m_method);
+            expect(resource_path.getHost()).toBe(param.m_host);
             expect(resource_path.getUrl()).toBe(param.m_url);
             expect(resource_path.getUrlPath()).toBe(param.m_result.m_url_path);
         }

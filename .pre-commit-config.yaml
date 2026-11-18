@@ -20,6 +20,7 @@ repos:
             entry: npx eslint --fix
             language: system
             files: \.(js|jsx|ts|tsx)$
+            exclude: (^|/)libs/|\.min\.js$
 
           - id: readynode-commit-msg
             name: ReadyNode Commit Message Check

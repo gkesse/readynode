@@ -1,10 +1,17 @@
 import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
 import unusedImports from 'eslint-plugin-unused-imports';
+import tseslint from 'typescript-eslint';
 
 export default [
     {
-        ignores: ['dist/**', 'coverage/**', 'node_modules/**']
+        ignores: [
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/coverage/**',
+            '**/public/**',
+            '**/libs/**',
+            '**/*.min.js'
+        ]
     },
 
     js.configs.recommended,

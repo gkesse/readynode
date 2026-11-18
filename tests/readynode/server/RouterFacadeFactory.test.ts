@@ -30,7 +30,11 @@ describe('TestRouterFacadeFactory', () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
         expect(() => {
-            const resource_path = new ResourcePath('METHOD_RESOURCE', 'URL_RESOURCE');
+            const resource_path = new ResourcePath(
+                'METHOD_RESOURCE',
+                'HOST_RESOURCE',
+                'URL_RESOURCE'
+            );
             new RouterFacadeFactory(resource_path);
         }).toThrow(DEF_MSG_EXCEPTION);
 
@@ -39,7 +43,7 @@ describe('TestRouterFacadeFactory', () => {
     });
 
     it('Test_Router_Facade_Readydev', () => {
-        const resource_path = new ResourcePath('GET', '/readydev/home');
+        const resource_path = new ResourcePath('GET', 'localhost', '/readydev/home');
         const router_facade_factory = new RouterFacadeFactory(resource_path);
         const router_facade = router_facade_factory.getRouterFacade();
         expect(router_facade.getType()).toBe(ROUTER_FACADE_TYPE.READYDEV);
