@@ -1,9 +1,8 @@
 import { Ref } from '@readynode/common/type/common';
 import { Exception } from '@readynode/exception/Exception';
 import Logger from '@readynode/logger/Logger';
+import { Tools } from '@readynode/tools/Tools';
 import ejs from 'ejs';
-import fs from 'fs';
-import path from 'path';
 
 export default class ServerTemplate {
     private readonly m_filename: Ref<string> = { value: '' };
@@ -24,17 +23,10 @@ export default class ServerTemplate {
             return false;
         }
 
-        const filename = path.join(p_dirname, p_template);
+        const filename = Tools.joinPath(p_dirname, p_template);
 
-        if (!fs.existsSync(filename)) {
+        if (!Tools.existsFile(filename)) {
             Logger.logError('Le chemin du template est introuvable.');
-            return false;
-        }
-
-        const stats = fs.statSync(filename);
-
-        if (!stats.isFile()) {
-            Logger.logError("Le template n'est pas un fichier.");
             return false;
         }
 

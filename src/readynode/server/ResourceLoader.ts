@@ -1,9 +1,8 @@
 import { Ref } from '@readynode/common/type/common';
 import { Exception } from '@readynode/exception/Exception';
 import Logger from '@readynode/logger/Logger';
-import fs from 'fs';
+import { Tools } from '@readynode/tools/Tools';
 import mime from 'mime-types';
-import path from 'path';
 import { PARAM_SERVER_ROOT } from './ServerTemplateWeb';
 
 export class MimeType {
@@ -90,7 +89,7 @@ export default class ResourceLoader {
             throw new Exception(`La ressource est introuvable.|url=${p_resource_file}`, false);
         }
 
-        this.m_extension = path.extname(p_resource_file).toLowerCase();
+        this.m_extension = Tools.getExtension(p_resource_file).toLowerCase();
 
         if (this.m_extension === '') {
             throw new Exception("L'extension de la ressource est vide.");
@@ -102,7 +101,7 @@ export default class ResourceLoader {
             throw new Exception('Le type mime de la ressource est introuvable.');
         }
 
-        this.m_data = fs.readFileSync(this.m_filename.value);
+        this.m_data = Tools.readBinary(this.m_filename.value);
     }
 
     private loadFilename(p_filename: Ref<string>, p_resource_file: string): boolean {
@@ -111,19 +110,10 @@ export default class ResourceLoader {
             return false;
         }
 
-        const filename = path.join(this.m_dirname, p_resource_file);
+        const filename = Tools.joinPath(this.m_dirname, p_resource_file);
 
-        if (!fs.existsSync(filename)) {
+        if (!Tools.existsFile(filename)) {
             Logger.logError(`Le chemin de la ressource est introuvable.|url=${p_resource_file}`);
-            return false;
-        }
-
-        const stats = fs.statSync(filename);
-
-        if (!stats.isFile()) {
-            Logger.logError(
-                `Le chemin de la ressource n'est pas un fichier.|url=${p_resource_file}`
-            );
             return false;
         }
 

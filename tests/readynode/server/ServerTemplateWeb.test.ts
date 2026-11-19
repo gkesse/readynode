@@ -1,29 +1,17 @@
 import ServerTemplateWeb, { PARAM_TEMPLATE_ROOT } from '@readynode/server/ServerTemplateWeb';
-import fs from 'fs';
-import path from 'path';
+import { Tools } from '@readynode/tools/Tools';
 
-const DEF_TEST_DIR = path.join(PARAM_TEMPLATE_ROOT, '/tmp');
-const DEF_TEMPLATE_FILE = path.join(DEF_TEST_DIR, '/test_template_file.ejs.html');
-const DEF_TEMPLATE_EJS = '/tmp/test_template_file.ejs.html';
-
-function onWriteFile(p_text: string): void {
-    fs.writeFileSync(DEF_TEMPLATE_FILE, p_text, 'utf8');
-}
-
-function onRemoveSpace(p_text: string): string {
-    return p_text.trim().replace(/^[ \t]+/gm, '');
-}
+const DEF_TEST_DIR = Tools.joinPath(PARAM_TEMPLATE_ROOT, '/test_dir');
+const DEF_TEST_TEMPLATE_FILE = Tools.joinPath(DEF_TEST_DIR, '/test_template_file.ejs.html');
+const DEF_TEST_EMPLATE_EJS = '/test_dir/test_template_file.ejs.html';
 
 describe('TestServerTemplateWeb', () => {
     beforeEach(() => {
-        fs.mkdirSync(DEF_TEST_DIR, { recursive: true });
-        fs.writeFileSync(DEF_TEMPLATE_FILE, '');
+        Tools.createFile(DEF_TEST_TEMPLATE_FILE);
     });
 
     afterEach(() => {
-        if (fs.existsSync(DEF_TEST_DIR)) {
-            fs.rmSync(DEF_TEST_DIR, { recursive: true, force: true });
-        }
+        Tools.removeDir(DEF_TEST_DIR);
     });
 
     it('Test_Template_Chemin_Vide', () => {
@@ -62,7 +50,7 @@ describe('TestServerTemplateWeb', () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
         expect(() => {
-            const server_template_web = new ServerTemplateWeb(DEF_TEMPLATE_EJS, {});
+            const server_template_web = new ServerTemplateWeb(DEF_TEST_EMPLATE_EJS, {});
             server_template_web.getHtml();
         }).toThrow(DEF_MSG_EXCEPTION);
 
@@ -75,11 +63,11 @@ describe('TestServerTemplateWeb', () => {
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
-        const DEF_TEXT_IN = onRemoveSpace(`<p>Nom: <%= name %></p>`);
+        const DEF_TEXT_WRITE = Tools.removeSpace(`<p>Nom: <%= name %></p>`);
 
-        onWriteFile(DEF_TEXT_IN);
+        Tools.writeFile(DEF_TEST_TEMPLATE_FILE, DEF_TEXT_WRITE);
 
-        const server_template_web = new ServerTemplateWeb(DEF_TEMPLATE_EJS, {});
+        const server_template_web = new ServerTemplateWeb(DEF_TEST_EMPLATE_EJS, {});
 
         await expect(server_template_web.loadHtml()).rejects.toThrow(DEF_MSG_EXCEPTION);
 
@@ -88,16 +76,16 @@ describe('TestServerTemplateWeb', () => {
     });
 
     it('Test_Template_Valide', async () => {
-        const DEF_TEXT_IN = onRemoveSpace(`<p>Nom: <%= name %></p>`);
-        const DEF_TEXT_OUT = onRemoveSpace(`<p>Nom: NAME_TEMPLATE</p>`);
+        const DEF_TEXT_WRITE = Tools.removeSpace(`<p>Nom: <%= name %></p>`);
+        const DEF_TEXT_READ = Tools.removeSpace(`<p>Nom: NAME_TEMPLATE</p>`);
 
-        onWriteFile(DEF_TEXT_IN);
+        Tools.writeFile(DEF_TEST_TEMPLATE_FILE, DEF_TEXT_WRITE);
 
-        const server_template_web = new ServerTemplateWeb(DEF_TEMPLATE_EJS, {
+        const server_template_web = new ServerTemplateWeb(DEF_TEST_EMPLATE_EJS, {
             name: 'NAME_TEMPLATE'
         });
 
         await server_template_web.loadHtml();
-        expect(server_template_web.getHtml()).toBe(DEF_TEXT_OUT);
+        expect(server_template_web.getHtml()).toBe(DEF_TEXT_READ);
     });
 });

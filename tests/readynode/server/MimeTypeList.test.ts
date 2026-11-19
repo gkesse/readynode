@@ -1,7 +1,7 @@
 import { Ref } from '@readynode/common/type/common';
 import { MimeType, MimeTypeList } from '@readynode/server/ResourceLoader';
 
-describe('TestMimeTypeList', () => {
+describe('TestServerMimeTypeList', () => {
     it('Test_Mime_Type_List_Par_Defaut', () => {
         const mime_type_list = new MimeTypeList();
         expect(mime_type_list.length).toBe(0);

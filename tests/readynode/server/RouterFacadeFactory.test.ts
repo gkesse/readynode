@@ -6,7 +6,7 @@ import {
 } from '@readynode/server/ServerRouterFactory';
 import RouterFacadeReadydev from '@readynode/server/web/router/RouterFacadeReadydev';
 
-describe('TestRouterFacadeFactory', () => {
+describe('TestServerRouterFacadeFactory', () => {
     it('Test_Resource_Facade_Factory_Par_Defaut', () => {
         const router_facade_factory = new RouterFacadeFactory();
         const router_facade = router_facade_factory.getRouterFacade();

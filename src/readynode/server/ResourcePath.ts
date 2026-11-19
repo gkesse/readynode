@@ -61,6 +61,11 @@ export default class ResourcePath {
         return this.m_url;
     }
 
+    public getUrlNormalize() {
+        if (this.m_url === '') return '';
+        return this.m_url.startsWith('/') ? this.m_url : `/${this.m_url}`;
+    }
+
     public getUrlPath() {
         return [this.m_code, this.m_path].join('/');
     }

@@ -1,6 +1,6 @@
 import { MimeType } from '@readynode/server/ResourceLoader';
 
-describe('TestMimeType', () => {
+describe('TestServerMimeType', () => {
     it('Test_Mime_Type_Par_Defaut', () => {
         const mime_type = new MimeType();
         expect(mime_type.getExtension()).toBe('');

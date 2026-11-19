@@ -5,7 +5,7 @@ import {
 } from '@readynode/server/ServerRouterFactory';
 import RouterFacadeReadydev from '@readynode/server/web/router/RouterFacadeReadydev';
 
-describe('TestRouterFacade', () => {
+describe('TestServerRouterFacade', () => {
     it('Test_Resource_Facade_Par_Defaut', () => {
         const router_facade = new RouterFacade();
         expect(router_facade.getType()).toBe(ROUTER_FACADE_TYPE.INCONNU);

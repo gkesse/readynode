@@ -12,7 +12,7 @@ export default class HomeController {
         return 'ReadyDEV';
     }
 
-    public getPageTitle(p_title: string = ''): string {
+    public getPageTitle(p_title: string): string {
         if (p_title !== '') {
             p_title = ` | ${p_title}`;
         }
@@ -48,7 +48,7 @@ export default class HomeController {
     public getPageUrl(): string {
         const protocol = 'http';
         const host = this.m_res.getResourcePath().getHost();
-        const url = this.m_res.getResourcePath().getUrl();
+        const url = this.m_res.getResourcePath().getUrlNormalize();
         return `${protocol}://${host}${url}`;
     }
 
