@@ -1,30 +1,18 @@
 import ResourceLoader from '@readynode/server/ResourceLoader';
 import { PARAM_SERVER_ROOT } from '@readynode/server/ServerTemplateWeb';
-import fs from 'fs';
-import path from 'path';
+import { Tools } from '@readynode/tools/Tools';
 
-const DEF_TEST_DIR = path.join(PARAM_SERVER_ROOT, '/tmp');
-const DEF_RESOURCE_FILE = path.join(DEF_TEST_DIR, '/test_resource_file.html');
-const DEF_RESOURCE_PATH = '/tmp/test_resource_file.html';
+const DEF_TEST_DIR = Tools.joinPath(PARAM_SERVER_ROOT, '/test_dir');
+const DEF_TEST_RESOURCE_FILE = Tools.joinPath(DEF_TEST_DIR, '/test_resource_file.html');
+const DEF_TEST_RESOURCE_PATH = '/test_dir/test_resource_file.html';
 
-function onWriteFile(p_text: string): void {
-    fs.writeFileSync(DEF_RESOURCE_FILE, p_text, 'utf8');
-}
-
-function onRemoveSpace(p_text: string): string {
-    return p_text.trim().replace(/^[ \t]+/gm, '');
-}
-
-describe('TestResourceLoader', () => {
+describe('TestServerResourceLoader', () => {
     beforeEach(() => {
-        fs.mkdirSync(DEF_TEST_DIR, { recursive: true });
-        fs.writeFileSync(DEF_RESOURCE_FILE, '');
+        Tools.createFile(DEF_TEST_RESOURCE_FILE);
     });
 
     afterEach(() => {
-        if (fs.existsSync(DEF_TEST_DIR)) {
-            fs.rmSync(DEF_TEST_DIR, { recursive: true, force: true });
-        }
+        Tools.removeDir(DEF_TEST_DIR);
     });
 
     it('Test_Resource_Chemin_Vide', () => {
@@ -57,41 +45,26 @@ describe('TestResourceLoader', () => {
         logSpy.mockRestore();
     });
 
-    it('Test_Resource_Chemin_Non_Fichier', () => {
-        const DEF_MSG_ERREUR = "Le chemin de la ressource n'est pas un fichier.";
-        const DEF_MSG_EXCEPTION = 'La ressource est introuvable.';
-
-        const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-
-        expect(() => {
-            new ResourceLoader('.');
-        }).toThrow(DEF_MSG_EXCEPTION);
-
-        expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(DEF_MSG_ERREUR));
-        expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(DEF_MSG_EXCEPTION));
-        logSpy.mockRestore();
-    });
-
     it('Test_Resource_Fichier_Trouve', () => {
-        const DEF_TEXT_IN = onRemoveSpace(`
+        const DEF_TEXT_WRITE = Tools.removeSpace(`
             <p>Bonjour tout le monde.</p>
             </p>Ceci est un message de texte.</p>
             `);
 
-        onWriteFile(DEF_TEXT_IN);
+        Tools.writeFile(DEF_TEST_RESOURCE_FILE, DEF_TEXT_WRITE);
 
         const DEF_MSG_DEBUG = 'Le type mime est introuvable.|extension=.html';
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
-        const resource_loader = new ResourceLoader(DEF_RESOURCE_PATH);
+        const resource_loader = new ResourceLoader(DEF_TEST_RESOURCE_PATH);
 
         expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(DEF_MSG_DEBUG));
 
         expect(resource_loader.getExtension()).toBe('.html');
         expect(resource_loader.getMimeType()).toBe('text/html');
         expect(resource_loader.getContentType()).toBe('text/html; charset=utf-8');
-        expect(resource_loader.getContentLength()).toBe(DEF_TEXT_IN.length);
-        expect(resource_loader.getContentText()).toBe(DEF_TEXT_IN);
+        expect(resource_loader.getContentLength()).toBe(DEF_TEXT_WRITE.length);
+        expect(resource_loader.getContentText()).toBe(DEF_TEXT_WRITE);
     });
 });

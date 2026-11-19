@@ -1,8 +1,7 @@
 import { Ref } from '@readynode/common/type/common';
 import { Exception } from '@readynode/exception/Exception';
 import Logger from '@readynode/logger/Logger';
-import fs from 'fs';
-import path from 'path';
+import { Tools } from '@readynode/tools/Tools';
 import ServerTemplate from './ServerTemplate';
 
 export const PARAM_SERVER_ROOT: string = './src/readynode/server/web/public';
@@ -37,39 +36,26 @@ export default class ServerTemplateWeb {
             return false;
         }
 
-        const filename = path.join(this.m_dirname, p_template);
+        const filename = Tools.joinPath(this.m_dirname, p_template);
 
-        if (!fs.existsSync(filename)) {
-            Logger.logError('Le chemin du template est introuvable.');
-            return false;
-        }
-
-        const stats = fs.statSync(filename);
-
-        if (stats.isFile()) {
-            p_filename.value = filename;
-            return true;
-        }
-
-        if (stats.isDirectory()) {
+        if (Tools.existsDir(filename)) {
             for (const index_file of this.m_index_file_list) {
-                const index_filename = path.join(filename, index_file);
+                const index_filename = Tools.joinPath(filename, index_file);
 
-                if (!fs.existsSync(index_filename)) {
-                    continue;
-                }
-
-                const index_stats = fs.statSync(index_filename);
-
-                if (index_stats.isFile()) {
+                if (Tools.existsFile(index_filename)) {
                     p_filename.value = index_filename;
                     return true;
                 }
             }
         }
 
-        Logger.logError('Le chemin du template est invalide.');
-        return false;
+        if (!Tools.existsFile(filename)) {
+            Logger.logError('Le chemin du template est introuvable.');
+            return false;
+        }
+
+        p_filename.value = filename;
+        return true;
     }
 
     public async loadHtml(): Promise<void> {

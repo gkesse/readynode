@@ -1,6 +1,6 @@
 import ResourcePath from '@readynode/server/ResourcePath';
 
-describe('TestResourcePath', () => {
+describe('TestServerResourcePath', () => {
     it('Test_Resource_Path_Par_Defaut', () => {
         const resource_path = new ResourcePath();
         expect(resource_path.getCode()).toBe('readydev');
@@ -42,6 +42,7 @@ describe('TestResourcePath', () => {
             m_path: string;
             m_method_path: string;
             m_url_path: string;
+            m_url_normalize: string;
         }
 
         interface Param {
@@ -60,7 +61,8 @@ describe('TestResourcePath', () => {
                     m_code: 'readydev',
                     m_path: 'home',
                     m_method_path: 'METHOD_RESOURCE:readydev/home',
-                    m_url_path: 'readydev/home'
+                    m_url_path: 'readydev/home',
+                    m_url_normalize: ''
                 }
             },
             {
@@ -71,7 +73,8 @@ describe('TestResourcePath', () => {
                     m_code: 'readydev',
                     m_path: 'home',
                     m_method_path: 'METHOD_RESOURCE:readydev/home',
-                    m_url_path: 'readydev/home'
+                    m_url_path: 'readydev/home',
+                    m_url_normalize: '/'
                 }
             },
             {
@@ -82,7 +85,8 @@ describe('TestResourcePath', () => {
                     m_code: 'CODE_RESOURCE',
                     m_path: 'home',
                     m_method_path: 'METHOD_RESOURCE:CODE_RESOURCE/home',
-                    m_url_path: 'CODE_RESOURCE/home'
+                    m_url_path: 'CODE_RESOURCE/home',
+                    m_url_normalize: '/CODE_RESOURCE'
                 }
             },
             {
@@ -93,7 +97,8 @@ describe('TestResourcePath', () => {
                     m_code: 'CODE_RESOURCE',
                     m_path: 'home',
                     m_method_path: 'METHOD_RESOURCE:CODE_RESOURCE/home',
-                    m_url_path: 'CODE_RESOURCE/home'
+                    m_url_path: 'CODE_RESOURCE/home',
+                    m_url_normalize: '/CODE_RESOURCE/'
                 }
             },
             {
@@ -104,7 +109,8 @@ describe('TestResourcePath', () => {
                     m_code: 'CODE_RESOURCE',
                     m_path: 'home',
                     m_method_path: 'METHOD_RESOURCE:CODE_RESOURCE/home',
-                    m_url_path: 'CODE_RESOURCE/home'
+                    m_url_path: 'CODE_RESOURCE/home',
+                    m_url_normalize: '/CODE_RESOURCE'
                 }
             },
             {
@@ -115,7 +121,8 @@ describe('TestResourcePath', () => {
                     m_code: 'CODE_RESOURCE',
                     m_path: 'home',
                     m_method_path: 'METHOD_RESOURCE:CODE_RESOURCE/home',
-                    m_url_path: 'CODE_RESOURCE/home'
+                    m_url_path: 'CODE_RESOURCE/home',
+                    m_url_normalize: '/CODE_RESOURCE/'
                 }
             },
             {
@@ -126,7 +133,8 @@ describe('TestResourcePath', () => {
                     m_code: 'CODE_RESOURCE',
                     m_path: 'PATH_RESOURCE',
                     m_method_path: 'METHOD_RESOURCE:CODE_RESOURCE/PATH_RESOURCE',
-                    m_url_path: 'CODE_RESOURCE/PATH_RESOURCE'
+                    m_url_path: 'CODE_RESOURCE/PATH_RESOURCE',
+                    m_url_normalize: '/CODE_RESOURCE/PATH_RESOURCE'
                 }
             },
             {
@@ -137,7 +145,8 @@ describe('TestResourcePath', () => {
                     m_code: 'CODE_RESOURCE',
                     m_path: 'PATH_RESOURCE',
                     m_method_path: 'METHOD_RESOURCE:CODE_RESOURCE/PATH_RESOURCE',
-                    m_url_path: 'CODE_RESOURCE/PATH_RESOURCE'
+                    m_url_path: 'CODE_RESOURCE/PATH_RESOURCE',
+                    m_url_normalize: '/CODE_RESOURCE/PATH_RESOURCE/'
                 }
             },
             {
@@ -148,7 +157,8 @@ describe('TestResourcePath', () => {
                     m_code: 'CODE_RESOURCE',
                     m_path: 'PATH_RESOURCE',
                     m_method_path: 'METHOD_RESOURCE:CODE_RESOURCE/PATH_RESOURCE',
-                    m_url_path: 'CODE_RESOURCE/PATH_RESOURCE'
+                    m_url_path: 'CODE_RESOURCE/PATH_RESOURCE',
+                    m_url_normalize: '/CODE_RESOURCE/PATH_RESOURCE'
                 }
             },
             {
@@ -159,7 +169,8 @@ describe('TestResourcePath', () => {
                     m_code: 'CODE_RESOURCE',
                     m_path: 'PATH_RESOURCE',
                     m_method_path: 'METHOD_RESOURCE:CODE_RESOURCE/PATH_RESOURCE',
-                    m_url_path: 'CODE_RESOURCE/PATH_RESOURCE'
+                    m_url_path: 'CODE_RESOURCE/PATH_RESOURCE',
+                    m_url_normalize: '/CODE_RESOURCE/PATH_RESOURCE/'
                 }
             }
         ];
@@ -172,6 +183,7 @@ describe('TestResourcePath', () => {
             expect(resource_path.getHost()).toBe(param.m_host);
             expect(resource_path.getUrl()).toBe(param.m_url);
             expect(resource_path.getUrlPath()).toBe(param.m_result.m_url_path);
+            expect(resource_path.getUrlNormalize()).toBe(param.m_result.m_url_normalize);
         }
     });
 });
