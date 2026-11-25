@@ -8,7 +8,7 @@ describe('TestModuleFactory', () => {
         expect(obj.getModule().onCreate()()).toBeInstanceOf(ModuleInconnu);
     });
 
-    it('Test_Module_Introuvable', () => {
+    it('Test_Erreur_Module_Introuvable', () => {
         const DEF_MSG_EXCEPTION = 'Le module est introuvable.';
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});

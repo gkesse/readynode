@@ -3,7 +3,7 @@ import { Exception } from '@readynode/exception/Exception';
 import Logger from '@readynode/logger/Logger';
 import { Tools } from '@readynode/tools/Tools';
 import mime from 'mime-types';
-import { PARAM_SERVER_ROOT } from './ServerTemplateWeb';
+import ServerTemplateWeb from './ServerTemplateWeb';
 
 export class MimeType {
     private readonly m_extension: string = '';
@@ -78,7 +78,7 @@ export class MimeTypeFactory {
 }
 
 export default class ResourceLoader {
-    private readonly m_dirname: string = PARAM_SERVER_ROOT;
+    private readonly m_dirname: string = ServerTemplateWeb.getServerRoot();
     private readonly m_filename: Ref<string> = { value: '' };
     private readonly m_extension: string = '';
     private readonly m_mime_type: string = '';
@@ -102,18 +102,19 @@ export default class ResourceLoader {
         }
 
         this.m_data = Tools.readBinary(this.m_filename.value);
+        Logger.logInfo(`La ressource a ete chargee avec succes.|url=${p_resource_file}`);
     }
 
     private loadFilename(p_filename: Ref<string>, p_resource_file: string): boolean {
         if (p_resource_file === '') {
-            Logger.logError('Le chemin de la ressource est vide.');
+            Logger.logWarn('Le chemin de la ressource est vide.');
             return false;
         }
 
         const filename = Tools.joinPath(this.m_dirname, p_resource_file);
 
         if (!Tools.existsFile(filename)) {
-            Logger.logError(`Le chemin de la ressource est introuvable.|url=${p_resource_file}`);
+            Logger.logWarn(`Le chemin de la ressource est introuvable.|url=${p_resource_file}`);
             return false;
         }
 

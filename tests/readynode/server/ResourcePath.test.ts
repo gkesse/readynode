@@ -10,7 +10,7 @@ describe('TestServerResourcePath', () => {
         expect(resource_path.getUrlPath()).toBe('readydev/home');
     });
 
-    it('Test_Ressource_Methode_Vide', () => {
+    it('Test_Erreur_Ressource_Methode_Vide', () => {
         const DEF_MSG_EXCEPTION = 'La methode de la ressource est vide.';
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -23,7 +23,7 @@ describe('TestServerResourcePath', () => {
         logSpy.mockRestore();
     });
 
-    it('Test_Ressource_Nom_Serveur_Vide', () => {
+    it('Test_Erreur_Ressource_Nom_Serveur_Vide', () => {
         const DEF_MSG_EXCEPTION = 'Le nom du serveur de la ressource est vide.';
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});

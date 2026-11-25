@@ -61,6 +61,14 @@ describe('TestTools', () => {
         expect(Tools.existsDir(DEF_TEST_DIR)).toBe(false);
     });
 
+    it('Test_Repertoire_Generation', () => {
+        const DEF_DIR_GENERATE = Tools.generateDir(__dirname, 'test_dir');
+        const DEF_DIR_BASE = Tools.joinPath(__dirname, 'test_dir');
+
+        expect(DEF_DIR_GENERATE).toContain(DEF_DIR_BASE);
+        expect(DEF_DIR_GENERATE.length).toBeGreaterThan(DEF_DIR_BASE.length + 32);
+    });
+
     // [fichier]
     it('Test_Fichier_Creation_Suppression', () => {
         Tools.createFile(DEF_TEST_FILE);
@@ -104,5 +112,14 @@ describe('TestTools', () => {
 
         Tools.removeDir(DEF_TEST_DIR);
         expect(Tools.existsDir(DEF_TEST_DIR)).toBe(false);
+    });
+
+    // [tmp]
+    it('Test_Repertoire_Temporaire_Lecture', () => {
+        expect(Tools.getTmpDir()).toBeTruthy();
+    });
+
+    it('Test_Repertoire_Temporaire_Generation', () => {
+        expect(Tools.generateTmpDir()).toContain(Tools.getTmpDir());
     });
 });

@@ -12,7 +12,7 @@ export default class HomeController {
         return 'ReadyDEV';
     }
 
-    public getPageTitle(p_title: string): string {
+    public getPageTitle(p_title: string = ''): string {
         if (p_title !== '') {
             p_title = ` | ${p_title}`;
         }
@@ -32,7 +32,7 @@ export default class HomeController {
     }
 
     public getPageLogo(): string {
-        return '/readydev/data/img/logo.png';
+        return '/public/readydev/data/img/logo.png';
     }
 
     public getPageDescription(): string {
@@ -63,7 +63,7 @@ export default class HomeController {
     }
 
     public getOpenGraphImage(): string {
-        return `${this.getResourceRoot()}/readydev/data/img/banner.png`;
+        return `${this.getResourceRoot()}/public/readydev/data/img/banner.png`;
     }
 
     public getOpenGraphImageMimeType(): string {

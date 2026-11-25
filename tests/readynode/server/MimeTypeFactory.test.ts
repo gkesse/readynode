@@ -7,7 +7,7 @@ describe('TestServerMimeTypeFactory', () => {
         expect(mime_type_factory.getMimeType().getMimeType()).toBe('');
     });
 
-    it('Test_Mime_Type_Introuvable', () => {
+    it('Test_Erreur_Mime_Type_Introuvable', () => {
         const DEF_MSG_EXCEPTION = 'Le type mime est introuvable.|extension=inconnu';
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});

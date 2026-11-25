@@ -95,14 +95,14 @@ describe('TestServerReadydevHomeController', () => {
 
     it('Test_Home_Controller_Creation', () => {
         const resource_path = new ResourcePath('METHOD_RESOURCE', 'HOST_RESOURCE', 'URL_RESOURCE');
-        const server_response_data = new ServerResponseData();
+        const server_response_data = new ServerResponseData(resource_path);
         const home_controller = new HomeController(server_response_data);
         expect(home_controller.getSiteName()).toBe('ReadyDEV');
         expect(home_controller.getPageTitle('PAGE_TTLE')).toBe('ReadyDEV | PAGE_TTLE');
         expect(home_controller.getPageLanguage()).toBe('fr_FR');
         expect(home_controller.getPageEncoding()).toBe('UTF-8');
         expect(home_controller.getPageLogoMimeType()).toBe('image/png');
-        expect(home_controller.getPageLogo()).toBe('/readydev/data/img/logo.png');
+        expect(home_controller.getPageLogo()).toBe('/public/readydev/data/img/logo.png');
         expect(home_controller.getPageDescription()).toBe(
             Tools.removeSpace(`
                 Avec ReadyDEV, apprenez en pratiquant grâce à des cours
@@ -111,13 +111,13 @@ describe('TestServerReadydevHomeController', () => {
                 Produit par Gérard KESSE.
                 `)
         );
-        expect(home_controller.getPageUrl()).toBe('http://');
+        expect(home_controller.getPageUrl()).toBe('http://HOST_RESOURCE/URL_RESOURCE');
         expect(home_controller.getOpenGraphType()).toBe('website');
         expect(home_controller.getResourceRoot()).toBe(
             'https://raw.githubusercontent.com/gkesse/readynode/refs/heads/main/src/readynode/server/web/public'
         );
         expect(home_controller.getOpenGraphImage()).toBe(
-            `${home_controller.getResourceRoot()}/readydev/data/img/banner.png`
+            `${home_controller.getResourceRoot()}/public/readydev/data/img/banner.png`
         );
         expect(home_controller.getOpenGraphImageMimeType()).toBe('image/png');
         expect(home_controller.getOpenGraphImageWidth()).toBe(440);

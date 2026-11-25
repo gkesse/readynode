@@ -1,18 +1,12 @@
-import { isNumber } from '@readynode/common/function/common';
 import { Ref } from '@readynode/common/type/common';
 import { Exception } from '@readynode/exception/Exception';
 import Logger from '@readynode/logger/Logger';
+import { Tools } from '@readynode/tools/Tools';
 import { createServer, Server as HttpServer, IncomingMessage, ServerResponse } from 'http';
 import ResourceLoader from './ResourceLoader';
 import ResourcePath from './ResourcePath';
 import ServerResponseData from './ServerResponseData';
-import {
-    RouterFacade,
-    RouterFacadeFactory,
-    RouterFacadeInterface,
-    RouterOnCallback,
-    RouterPath
-} from './ServerRouterFactory';
+import { RouterFacade, RouterFacadeFactory, RouterOnCallback } from './ServerRouterFactory';
 import ServerRouterInconnu from './ServerRouterInconnu';
 
 export class ServerManager {
@@ -27,20 +21,25 @@ export class ServerManager {
     public async run(): Promise<void> {
         const method = this.m_req.method ?? '';
         const host = this.m_req.headers?.host ?? '';
-        const path = this.m_req.url?.split('?')[0] ?? '';
-        const resource_path: ResourcePath = new ResourcePath(method, host, path);
+        const url = this.m_req.url?.split('?')[0] ?? '';
+        const resource_path: ResourcePath = new ResourcePath(method, host, url);
         const router_facade_factory = new RouterFacadeFactory(resource_path);
         const router_facade: RouterFacade = router_facade_factory.getRouterFacade();
-        const router_facade_interface: RouterFacadeInterface = router_facade.getFacade();
-        const router_path: RouterPath = router_facade_interface.getRouterPath();
+        const onCallback: RouterOnCallback = router_facade.onCallback();
         const server_response_data: ServerResponseData = new ServerResponseData(resource_path);
-        const onCallback: RouterOnCallback = router_path.onCallback();
+
         await onCallback(server_response_data);
+
         const response_data = server_response_data.getResponseData();
+
         this.m_res.writeHead(response_data.getStatusCode(), {
             'Content-Type': response_data.getContentType()
         });
         this.m_res.end(response_data.getResponseText());
+
+        Logger.logInfo(
+            `La page a ete chargee avec succes.|code=${resource_path.getCode()}|page=${resource_path.getPath()}`
+        );
     }
 }
 
@@ -75,7 +74,7 @@ export default class ServerController {
             Logger.logError('La taille du numero de port est incorrect.');
             return false;
         }
-        if (!isNumber(port)) {
+        if (!Tools.isNumber(port)) {
             Logger.logError("Le numero de port n'est pas un entier.");
             return false;
         }
