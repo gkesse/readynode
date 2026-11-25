@@ -114,7 +114,7 @@ describe('TestServerReadydevHomeController', () => {
         expect(home_controller.getPageUrl()).toBe('http://HOST_RESOURCE/URL_RESOURCE');
         expect(home_controller.getOpenGraphType()).toBe('website');
         expect(home_controller.getResourceRoot()).toBe(
-            'https://raw.githubusercontent.com/gkesse/readynode/refs/heads/main/src/readynode/server/web/public'
+            'https://raw.githubusercontent.com/gkesse/readynode/refs/heads/main/src/readynode/server/web/root'
         );
         expect(home_controller.getOpenGraphImage()).toBe(
             `${home_controller.getResourceRoot()}/public/readydev/data/img/banner.png`

@@ -58,7 +58,7 @@ export default class HomeController {
 
     public getResourceRoot(): string {
         const resource = 'https://raw.githubusercontent.com/gkesse/readynode/refs/heads/main';
-        const root = 'src/readynode/server/web/public';
+        const root = 'src/readynode/server/web/root';
         return `${resource}/${root}`;
     }
 
