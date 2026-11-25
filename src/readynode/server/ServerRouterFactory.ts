@@ -9,28 +9,20 @@ export enum ROUTER_FACADE_TYPE {
     READYDEV
 }
 
-export interface RouterFacadeInterface {
-    getRouterPath(): RouterPath;
-}
-
-export class RouterFacadeInconnu implements RouterFacadeInterface {
-    public getRouterPath(): RouterPath {
-        return new RouterPath();
-    }
-}
+export type RouterOnCallback = (p_res: ServerResponseData) => Promise<void>;
 
 export class RouterFacade {
     private readonly m_type: ROUTER_FACADE_TYPE;
     private readonly m_code: string;
-    private readonly m_facade: RouterFacadeInterface = new RouterFacadeInconnu();
+    private readonly m_on_callback: RouterOnCallback;
 
     constructor();
-    constructor(p_type: ROUTER_FACADE_TYPE, p_code: string, p_facade: RouterFacadeInterface);
+    constructor(p_type: ROUTER_FACADE_TYPE, p_code: string, p_on_callback: RouterOnCallback);
 
-    constructor(p_type?: ROUTER_FACADE_TYPE, p_code?: string, p_facade?: RouterFacadeInterface) {
+    constructor(p_type?: ROUTER_FACADE_TYPE, p_code?: string, p_on_callback?: RouterOnCallback) {
         this.m_type = p_type ?? ROUTER_FACADE_TYPE.INCONNU;
         this.m_code = p_code ?? 'inconnu';
-        this.m_facade = p_facade ?? new RouterFacadeInconnu();
+        this.m_on_callback = p_on_callback ?? (async (_p_res: ServerResponseData) => {});
     }
 
     public getType(): ROUTER_FACADE_TYPE {
@@ -41,8 +33,8 @@ export class RouterFacade {
         return this.m_code;
     }
 
-    public getFacade(): RouterFacadeInterface {
-        return this.m_facade;
+    public onCallback(): RouterOnCallback {
+        return this.m_on_callback;
     }
 }
 
@@ -82,9 +74,9 @@ export class RouterFacadeFactory {
     private addRouterFacade(
         p_type: ROUTER_FACADE_TYPE,
         p_site_code: string,
-        p_facade: RouterFacadeInterface
+        p_on_facade: RouterOnCallback
     ): void {
-        const router_facade = new RouterFacade(p_type, p_site_code, p_facade);
+        const router_facade = new RouterFacade(p_type, p_site_code, p_on_facade);
         this.m_router_facade_list.push(router_facade);
     }
 
@@ -92,7 +84,7 @@ export class RouterFacadeFactory {
         this.addRouterFacade(
             ROUTER_FACADE_TYPE.READYDEV,
             'readydev',
-            new RouterFacadeReadydev(this.m_resource_path)
+            RouterFacadeReadydev.onCallback
         );
     }
 
@@ -105,56 +97,5 @@ export class RouterFacadeFactory {
 
     public getRouterFacade(): RouterFacade {
         return this.m_router_facade.value;
-    }
-}
-
-export type RouterOnCallback = (p_res: ServerResponseData) => Promise<void>;
-
-export class RouterPath {
-    private readonly m_method: string;
-    private readonly m_path: string;
-    private readonly m_on_callback: RouterOnCallback;
-
-    constructor();
-    constructor(p_method: string, p_path: string, p_on_callback: RouterOnCallback);
-
-    constructor(p_method?: string, p_path?: string, p_on_callback?: RouterOnCallback) {
-        this.m_method = p_method ?? '';
-        this.m_path = p_path ?? '';
-        this.m_on_callback = p_on_callback ?? (async (_p_res: ServerResponseData) => {});
-    }
-
-    public getMethod(): string {
-        return this.m_method;
-    }
-
-    public getPath(): string {
-        return this.m_path;
-    }
-
-    public onCallback(): RouterOnCallback {
-        return this.m_on_callback;
-    }
-}
-
-export class RouterPathList extends Array<RouterPath> {
-    public loadRouterByPath(p_router: Ref<RouterPath>, p_method: string, p_path: string): boolean {
-        const router = this.find(
-            (p_obj) => p_obj.getMethod() === p_method && p_obj.getPath() === p_path
-        );
-        if (router) {
-            p_router.value = router;
-            return true;
-        }
-        return false;
-    }
-
-    private addRouter(p_method: string, p_path: string, p_callback: RouterOnCallback): void {
-        const router = new RouterPath(p_method, p_path, p_callback);
-        this.push(router);
-    }
-
-    public addRouterGet(p_path: string, p_callback: RouterOnCallback): void {
-        this.addRouter('GET', p_path, p_callback);
     }
 }

@@ -69,4 +69,8 @@ export default class ResourcePath {
     public getUrlPath() {
         return [this.m_code, this.m_path].join('/');
     }
+
+    public getUrlHome() {
+        return [this.m_code, 'home'].join('/');
+    }
 }

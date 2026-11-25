@@ -1,8 +1,9 @@
 import ServerTemplate from '@readynode/server/ServerTemplate';
 import { Tools } from '@readynode/tools/Tools';
 
-const DEF_TEST_DIR = Tools.joinPath(__dirname, '/test_dir');
-const DEF_TEST_TEMPLATE_FILE = Tools.joinPath(DEF_TEST_DIR, '/test_template_file.ejs.html');
+const DEF_TEST_DIR = Tools.joinPath(__dirname, 'TestServerTemplate');
+const DEF_TEST_TEMPLATE_FILE = Tools.joinPath(DEF_TEST_DIR, 'test_template_file.ejs.html');
+const DEF_TEST_TEMPLATE_PATH = 'test_template_file.ejs.html';
 
 describe('TestServerTemplate', () => {
     beforeEach(() => {
@@ -13,7 +14,7 @@ describe('TestServerTemplate', () => {
         Tools.removeDir(DEF_TEST_DIR);
     });
 
-    it('Test_Template_Chemin_Vide', () => {
+    it('Test_Erreur_Template_Chemin_Vide', () => {
         const DEF_MSG_ERREUR = 'Le chemin du template est vide.';
         const DEF_MSG_EXCEPTION = 'Le template est introuvable.';
 
@@ -28,7 +29,7 @@ describe('TestServerTemplate', () => {
         logSpy.mockRestore();
     });
 
-    it('Test_Template_Chemin_Introuvable', () => {
+    it('Test_Erreur_Template_Chemin_Introuvable', () => {
         const DEF_MSG_ERREUR = 'Le chemin du template est introuvable.';
         const DEF_MSG_EXCEPTION = 'Le template est introuvable.';
 
@@ -43,7 +44,7 @@ describe('TestServerTemplate', () => {
         logSpy.mockRestore();
     });
 
-    it('Test_Template_Non_Charge', () => {
+    it('Test_Erreur_Template_Non_Charge', () => {
         const DEF_MSG_EXCEPTION = "Le template n'est pas charge.";
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -57,7 +58,7 @@ describe('TestServerTemplate', () => {
         logSpy.mockRestore();
     });
 
-    it('Test_Template_Invalide', async () => {
+    it('Test_Erreur_Template_Invalide', async () => {
         const DEF_MSG_EXCEPTION = 'Le template est invalide.';
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -80,7 +81,7 @@ describe('TestServerTemplate', () => {
 
         Tools.writeFile(DEF_TEST_TEMPLATE_FILE, DEF_TEXT_WRITE);
 
-        const server_template = new ServerTemplate('', DEF_TEST_TEMPLATE_FILE, {
+        const server_template = new ServerTemplate(DEF_TEST_DIR, DEF_TEST_TEMPLATE_PATH, {
             name: 'NAME_TEMPLATE'
         });
 

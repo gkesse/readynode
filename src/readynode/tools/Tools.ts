@@ -1,5 +1,6 @@
 import { Exception } from '@readynode/exception/Exception';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 
 import { basename, dirname, extname } from 'path';
@@ -41,6 +42,10 @@ export class Tools {
             throw new Exception("Le repertoire n'existe pas sur le disque.");
         }
         fs.rmSync(p_dir, { recursive: true, force: true });
+    }
+
+    public static generateDir(...p_paths: string[]): string {
+        return path.join(...p_paths, crypto.randomUUID());
     }
 
     // [fichier]
@@ -113,5 +118,14 @@ export class Tools {
             throw new Exception("Le fichier n'existe pas sur le disque.");
         }
         return fs.readFileSync(p_file);
+    }
+
+    // [tmp]
+    public static getTmpDir(): string {
+        return os.tmpdir();
+    }
+
+    public static generateTmpDir(): string {
+        return path.join(os.tmpdir(), crypto.randomUUID());
     }
 }

@@ -1,7 +1,7 @@
 import AppController from '@readynode/app/AppController';
 
 describe('TestAppController', () => {
-    it('Test_Nombre_Arguments_Incorrect', () => {
+    it('Test_Erreur_Nombre_Arguments_Incorrect', () => {
         const DEF_MSG_EXCEPTION = "Le nombre d'arguments est incorrect.";
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -13,7 +13,7 @@ describe('TestAppController', () => {
         expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(DEF_MSG_EXCEPTION));
     });
 
-    it('Test_Module_Introuvable', () => {
+    it('Test_Erreur_Module_Introuvable', () => {
         const DEF_MSG_EXCEPTION = 'Le module est introuvable.';
 
         expect(() => {
@@ -21,7 +21,7 @@ describe('TestAppController', () => {
         }).toThrow(DEF_MSG_EXCEPTION);
     });
 
-    it('Test_Server_Nombre_Arguments_Incorrect', () => {
+    it('Test_Erreur_Server_Nombre_Arguments_Incorrect', () => {
         const DEF_MSG_EXCEPTION = "Le nombre d'arguments est incorrect.";
 
         expect(() => {

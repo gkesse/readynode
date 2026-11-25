@@ -14,8 +14,15 @@ describe('TestServerManager', () => {
             end: jest.fn()
         } as unknown as ServerResponse;
 
+        const DEF_MSG_INFO = 'La page a ete chargee avec succes.';
+
+        const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+
         const server_manager = new ServerManager(req, res);
         await server_manager.run();
+
+        expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(DEF_MSG_INFO));
+        logSpy.mockRestore();
 
         expect(res.writeHead).toHaveBeenCalled();
         expect(res.end).toHaveBeenCalled();

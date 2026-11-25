@@ -1,7 +1,7 @@
 import { Exception } from '@readynode/exception/Exception';
 
 describe('TestException', () => {
-    it('Test_Lancer_Exception', () => {
+    it('Test_Exception_Lancement', () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
         const onExeception = () => {

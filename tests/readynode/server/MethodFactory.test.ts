@@ -8,7 +8,7 @@ describe('TestServerMethodFactory', () => {
         expect(method_factory.getMethod().onCallback()([])).toBeUndefined();
     });
 
-    it('Test_Method_Introuvable', () => {
+    it('Test_Erreur_Method_Introuvable', () => {
         const DEF_MSG_EXCEPTION = 'La methode est introuvable.';
 
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});

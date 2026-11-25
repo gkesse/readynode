@@ -6,7 +6,7 @@ describe('TestServerModule', () => {
         expect(server_module.run()).toBeUndefined();
     });
 
-    it('Test_Nombre_Arguments_Incorrect', () => {
+    it('Test_Erreur_Nombre_Arguments_Incorrect', () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
         expect(() => {

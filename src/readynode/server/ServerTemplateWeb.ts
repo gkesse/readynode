@@ -4,11 +4,8 @@ import Logger from '@readynode/logger/Logger';
 import { Tools } from '@readynode/tools/Tools';
 import ServerTemplate from './ServerTemplate';
 
-export const PARAM_SERVER_ROOT: string = './src/readynode/server/web/public';
-export const PARAM_TEMPLATE_ROOT: string = './src/readynode/server/web/template';
-
 export default class ServerTemplateWeb {
-    private readonly m_dirname: string = PARAM_TEMPLATE_ROOT;
+    private readonly m_dirname: string = ServerTemplateWeb.getTemplateRoot();
     private readonly m_filename: Ref<string> = { value: '' };
     private readonly m_index_file_list: string[] = [];
     private readonly m_template: ServerTemplate;
@@ -17,7 +14,7 @@ export default class ServerTemplateWeb {
     constructor(p_template: string, p_data: ejs.Data) {
         this.initIndexFileList();
         if (!this.loadFilename(this.m_filename, p_template)) {
-            throw new Exception('Le template est introuvable.');
+            throw new Exception(`Le template est introuvable.|template=${p_template}`);
         }
         this.m_template = new ServerTemplate('', this.m_filename.value, p_data);
     }
@@ -50,12 +47,20 @@ export default class ServerTemplateWeb {
         }
 
         if (!Tools.existsFile(filename)) {
-            Logger.logError('Le chemin du template est introuvable.');
+            Logger.logError(`Le chemin du template est introuvable.|template=${p_template}`);
             return false;
         }
 
         p_filename.value = filename;
         return true;
+    }
+
+    public static getServerRoot(): string {
+        return './src/readynode/server/web/root';
+    }
+
+    public static getTemplateRoot(): string {
+        return './src/readynode/server/web/template';
     }
 
     public async loadHtml(): Promise<void> {
